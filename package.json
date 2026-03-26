@@ -1,0 +1,22 @@
+{
+  "name": "screenshot-mcp",
+  "version": "1.0.0",
+  "description": "Cross-platform MCP server for taking screenshots of desktops and windows",
+  "type": "module",
+  "bin": {
+    "screenshot-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.28.0",
+    "node-screenshots": "^0.2.8",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.5.0"
+  }
+}
