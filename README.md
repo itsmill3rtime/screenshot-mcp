@@ -25,41 +25,56 @@ Built with TypeScript and [`node-screenshots`](https://github.com/nicehash/node-
 ### Install
 
 ```bash
-git clone https://github.com/your-username/screenshot-mcp.git
+git clone https://github.com/itsmill3rtime/screenshot-mcp.git
 cd screenshot-mcp
 npm install
 npm run build
 ```
 
-### Configure
+### Configure (automatic)
 
-Add the server to your MCP client configuration. For example, in Claude Desktop (`claude_desktop_config.json`):
+Run the interactive setup to automatically add the server to your MCP client config:
+
+```bash
+npm run setup
+```
+
+The setup script will:
+1. Detect your Claude Desktop and Claude Code config file locations
+2. Show you exactly what it will write
+3. Ask for confirmation before making any changes
+
+### Configure (manual)
+
+If you prefer to configure manually, add the following to your MCP client config.
+
+**Claude Desktop** (`claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "screenshot": {
       "command": "node",
-      "args": ["path/to/screenshot-mcp/dist/index.js"]
+      "args": ["/absolute/path/to/screenshot-mcp/dist/index.js"]
     }
   }
 }
 ```
 
-Or in Claude Code (`settings.json`):
+**Claude Code** (`settings.json`):
 
 ```json
 {
   "mcpServers": {
     "screenshot": {
       "command": "node",
-      "args": ["path/to/screenshot-mcp/dist/index.js"]
+      "args": ["/absolute/path/to/screenshot-mcp/dist/index.js"]
     }
   }
 }
 ```
 
-Replace `path/to/screenshot-mcp` with the actual path to the cloned repo.
+Replace `/absolute/path/to/screenshot-mcp` with the actual path to the cloned repo.
 
 ### Run Standalone (for testing)
 
@@ -71,22 +86,43 @@ The server communicates over **stdio** using the MCP protocol -- it is designed 
 
 ## Usage Examples
 
-Once configured, your AI assistant can:
+Once configured, just describe what you need in natural language. The assistant will capture the screenshot, look at it, and respond.
 
-**List all windows with a suggestion:**
-> "Take a screenshot of VS Code"
+### Bug Reports & Debugging
 
-The assistant calls `list_windows` with `suggest: "VS Code"`, gets back the full window list with the best match marked `suggested: true`, and presents the options to you.
+> "Take a screenshot of my browser. The login form is broken -- the submit button overlaps the password field on mobile view."
 
-**Capture a specific monitor:**
-> "Screenshot my second monitor"
+> "Screenshot the app. There's a weird rendering glitch in the sidebar when I expand the navigation tree."
 
-The assistant calls `list_windows` to find monitor IDs, then calls `capture_monitor` with the appropriate ID.
+> "Take a screenshot of Chrome. The API response is showing raw JSON instead of the formatted table we built."
 
-**Capture a window:**
-> "Grab a screenshot of my browser"
+> "Grab a screenshot of my terminal. The build is failing with a wall of errors and I can't figure out which one is the root cause."
 
-The assistant calls `list_windows` with `suggest: "browser"`, confirms the target with you, then calls `capture_window` with the selected window ID.
+> "Screenshot VS Code. I'm getting red squiggly lines everywhere after updating TypeScript but the code looks correct to me."
+
+### UI & Design Feedback
+
+> "Take a screenshot of the app. The spacing between the cards feels off compared to the Figma mockup -- can you compare?"
+
+> "Screenshot my browser. The dark mode toggle works but some text is still black on the dark background."
+
+> "Take a screenshot of the dashboard. The chart labels are overlapping at smaller breakpoints and I'm not sure how to fix it."
+
+### Multi-Monitor & Window Targeting
+
+> "Screenshot my second monitor. I have the docs open there and want to reference the API schema."
+
+> "Take a screenshot of Figma. I need you to see the updated component designs before we start coding."
+
+> "Screenshot Slack. There's a thread with the error logs from the QA team I want you to look at."
+
+### General Workflow
+
+> "Take a screenshot of my browser. Does this page look done enough to ship?"
+
+> "Screenshot the app. I just deployed the fix -- can you verify the layout looks right now?"
+
+> "Take a screenshot of my desktop. I have a few windows arranged with reference material -- use them to understand what I'm working on."
 
 ## Tool Reference
 
