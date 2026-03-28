@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
 import { resolve, join } from "path";
 import { createInterface } from "readline";
-import { platform, homedir, env } from "os";
+import { platform, homedir } from "os";
 
 const SERVER_NAME = "screenshot";
 const SCRIPT_PATH = resolve("dist/index.js");
@@ -22,7 +22,7 @@ function getConfigTargets() {
 
   // Claude Desktop
   if (os === "win32") {
-    const appData = env.APPDATA || join(home, "AppData", "Roaming");
+    const appData = process.env.APPDATA || join(home, "AppData", "Roaming");
     targets.push({
       name: "Claude Desktop",
       path: join(appData, "Claude", "claude_desktop_config.json"),
