@@ -93,7 +93,7 @@ async function main() {
   targets.forEach((t, i) => {
     console.log(`  [${i + 1}] ${t.name}`);
     if (t.type === "claude-code") {
-      console.log(`      Uses: claude mcp add --global`);
+      console.log(`      Uses: claude mcp add --scope user`);
     } else {
       const exists = existsSync(t.path);
       console.log(`      ${t.path}`);
@@ -140,7 +140,7 @@ async function main() {
     console.log(`--- ${target.name} ---`);
 
     if (target.type === "claude-code") {
-      const cmd = `claude mcp add --global ${SERVER_NAME} node ${SCRIPT_PATH}`;
+      const cmd = `claude mcp add --scope user ${SERVER_NAME} node ${SCRIPT_PATH}`;
       console.log(`Will run: ${cmd}`);
       console.log("");
 

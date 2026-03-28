@@ -64,7 +64,7 @@ If you prefer to configure manually, add the following to your MCP client config
 **Claude Code** (global, available in all projects):
 
 ```bash
-claude mcp add --global screenshot node /absolute/path/to/screenshot-mcp/dist/index.js
+claude mcp add --scope user screenshot node /absolute/path/to/screenshot-mcp/dist/index.js
 ```
 
 Or for a single project only:
