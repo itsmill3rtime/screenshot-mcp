@@ -61,17 +61,16 @@ If you prefer to configure manually, add the following to your MCP client config
 }
 ```
 
-**Claude Code** (`settings.json`):
+**Claude Code** (global, available in all projects):
 
-```json
-{
-  "mcpServers": {
-    "screenshot": {
-      "command": "node",
-      "args": ["/absolute/path/to/screenshot-mcp/dist/index.js"]
-    }
-  }
-}
+```bash
+claude mcp add --global screenshot node /absolute/path/to/screenshot-mcp/dist/index.js
+```
+
+Or for a single project only:
+
+```bash
+claude mcp add screenshot node /absolute/path/to/screenshot-mcp/dist/index.js
 ```
 
 Replace `/absolute/path/to/screenshot-mcp` with the actual path to the cloned repo.

@@ -3,6 +3,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
 import { resolve, join } from "path";
 import { createInterface } from "readline";
+import { execSync } from "child_process";
 import { platform, homedir } from "os";
 
 const SERVER_NAME = "screenshot";
@@ -39,10 +40,10 @@ function getConfigTargets() {
     });
   }
 
-  // Claude Code (global settings)
+  // Claude Code (via CLI)
   targets.push({
     name: "Claude Code (global)",
-    path: join(home, ".claude", "settings.json"),
+    type: "claude-code",
   });
 
   return targets;
@@ -90,10 +91,14 @@ async function main() {
   console.log("Available config targets:");
   console.log("");
   targets.forEach((t, i) => {
-    const exists = existsSync(t.path);
     console.log(`  [${i + 1}] ${t.name}`);
-    console.log(`      ${t.path}`);
-    console.log(`      ${exists ? "File exists" : "Will be created"}`);
+    if (t.type === "claude-code") {
+      console.log(`      Uses: claude mcp add --global`);
+    } else {
+      const exists = existsSync(t.path);
+      console.log(`      ${t.path}`);
+      console.log(`      ${exists ? "File exists" : "Will be created"}`);
+    }
     console.log("");
   });
 
@@ -133,6 +138,27 @@ async function main() {
   for (const target of selected) {
     console.log("");
     console.log(`--- ${target.name} ---`);
+
+    if (target.type === "claude-code") {
+      const cmd = `claude mcp add --global ${SERVER_NAME} node ${SCRIPT_PATH}`;
+      console.log(`Will run: ${cmd}`);
+      console.log("");
+
+      const confirm = await ask(rl, "Confirm? (Y/n): ");
+      if (confirm.trim().toLowerCase() === "n") {
+        console.log("Skipped.");
+        continue;
+      }
+
+      try {
+        execSync(cmd, { stdio: "inherit" });
+        console.log("Done.");
+      } catch {
+        console.log("Failed. Is Claude Code CLI installed? Run: npm install -g @anthropic-ai/claude-code");
+      }
+      continue;
+    }
+
     console.log(`File: ${target.path}`);
 
     let config = readJsonFile(target.path) || {};
